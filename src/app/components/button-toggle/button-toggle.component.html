@@ -1,0 +1,10 @@
+<p>button-toggle works!</p>
+<section>
+    <h4>Button Toggle inside of a Reactive form</h4>
+    <mat-button-toggle-group [formControl]="tipoFuente" aria-label="Font Style">
+      <mat-button-toggle value="Bold" (change)="verFuente($event.value)">Bold</mat-button-toggle>
+      <mat-button-toggle value="Italic" (change)="verFuente($event.value)">Italic</mat-button-toggle>
+      <mat-button-toggle value="Underline" (change)="verFuente($event.value)">Underline</mat-button-toggle>
+    </mat-button-toggle-group>
+    <p>Chosen value is {{tipoFuente.value}}</p>
+</section>

@@ -1,0 +1,73 @@
+<app-navbar></app-navbar>
+
+<br>
+<br>
+<div class="container">
+  <section>
+    <div class="example-label">Raised</div>
+    <div class="example-button-row">
+      <button mat-raised-button (click)="openDialog()">Launch dialog</button>
+    </div>
+  </section>
+
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h1>Pregunta</h1>
+
+      <div class="form-control">
+        <div>
+          <label class="control-label">Numero de pregunta: </label>
+          <p *ngFor="let item of questionRandom"> {{item.id}}</p>
+        </div>
+
+        <div>
+          <p *ngFor="let item of questionRandom"> {{item.nameQuestion}} </p>
+        </div> 
+      
+        <div *ngFor="let item of questionRandom">  
+          <h4>{{item.nameQuestion}}</h4>
+          <ul>
+            <mat-button-toggle-group  [formControl]="tipoFuenteControl" aria-label="Font Style">
+              <mat-button-toggle *ngFor="let items of item.answerName" value={{items.correctAnswer}} (change)="verFuente($event.value)">{{items.asnwerName}}</mat-button-toggle>
+            </mat-button-toggle-group>
+          </ul>    
+          <p>Chosen value is {{tipoFuenteControl.value}}</p>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-outline-success my-2 my-sm-0" (click)="viewQuestionRandom()">Buscar Pregunta</button>
+          <button type="submit" class="botonid" (click)="viewQuestionRandom()">Buscar Pregunta</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <button mat-button>LIKE</button>
+   
+  <div *ngFor="let item of questionRandom">
+    <ul>
+      <ul *ngFor="let items of item.answerName">
+        <button class="btn" value={{items.correctAnswer}} (click)="verFuente(items.correctAnswer)">{{items.asnwerName}}</button>
+      </ul>
+    </ul>
+  </div>
+        
+  <div>
+    <h2>Lista</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Pregunta</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let item of questions">
+            <td>{{item.id}}</td>
+            <td>{{item.nameQuestion}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
