@@ -13,7 +13,6 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <h1>Pregunta</h1>
-
       <div class="form-control">
         <div>
           <label class="control-label">Numero de pregunta: </label>
@@ -27,16 +26,20 @@
         <div *ngFor="let item of questionRandom">  
           <h4>{{item.nameQuestion}}</h4>
           <ul>
+            <!-- Botones horizontales donde muestran las opciones de respuesta-->
             <mat-button-toggle-group  [formControl]="tipoFuenteControl" aria-label="Font Style">
-              <mat-button-toggle *ngFor="let items of item.answerName" value={{items.correctAnswer}} (change)="verFuente($event.value)">{{items.asnwerName}}</mat-button-toggle>
+              <mat-button-toggle *ngFor="let items of item.answerName" 
+                                  value={{items.correctAnswer}} (change)="validateSelectedQuestion($event.value)">
+                {{items.asnwerName}}
+              </mat-button-toggle>
             </mat-button-toggle-group>
           </ul>    
           <p>Chosen value is {{tipoFuenteControl.value}}</p>
         </div>
 
         <div>
-          <button type="submit" class="btn btn-outline-success my-2 my-sm-0" (click)="viewQuestionRandom()">Buscar Pregunta</button>
-          <button type="submit" class="botonid" (click)="viewQuestionRandom()">Buscar Pregunta</button>
+          <button type="submit" class="btn btn-outline-success my-2 my-sm-0" (click)="showQuestionRandom()">Buscar Pregunta</button>
+          <button type="submit" class="botonid" (click)="showQuestionRandom()">Buscar Pregunta</button>
         </div>
       </div>
 
@@ -44,10 +47,13 @@
   </div>
   <button mat-button>LIKE</button>
    
+  <!-- Botones verticales que muestran las respuestas-->
   <div *ngFor="let item of questionRandom">
     <ul>
       <ul *ngFor="let items of item.answerName">
-        <button class="btn" value={{items.correctAnswer}} (click)="verFuente(items.correctAnswer)">{{items.asnwerName}}</button>
+        <button class="btn" value={{items.correctAnswer}} (click)="validateSelectedQuestion(items.correctAnswer)">
+          R: {{items.asnwerName}}
+        </button>
       </ul>
     </ul>
   </div>

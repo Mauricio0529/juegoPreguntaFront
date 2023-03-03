@@ -1,0 +1,8 @@
+mat-grid-tile {
+    background: rgb(211, 214, 215);
+    cursor: pointer;
+}
+
+mat-grid-tile:hover {
+    background: rgb(0, 154, 168);
+}

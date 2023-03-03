@@ -14,6 +14,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 /* COMPONENTS */
 import { DialogComponent } from './components/dialog/dialog.component';
@@ -23,8 +25,11 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 /* PAGES */
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
-import { CategoryComponent } from './pages/category/category.component';
-import { GameComponent } from './pages/game/game.component';
+import { CategoryComponent } from './pages/user/category/category.component';
+import { GameComponent } from './pages/user/game/game.component';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { authInterceptorProviders } from './services/httpInterceptors/auth.interceptor';
+import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 
 
 
@@ -37,7 +42,9 @@ import { GameComponent } from './pages/game/game.component';
     LoginComponent,
     SignupComponent,
     CategoryComponent,
-    GameComponent
+    GameComponent,
+    SnackBarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -51,9 +58,11 @@ import { GameComponent } from './pages/game/game.component';
     MatDialogModule,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule,
+    MatGridListModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders], // agregamos la constante (metodo)
   bootstrap: [AppComponent]
 })
 export class AppModule { }

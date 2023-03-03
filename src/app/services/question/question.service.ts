@@ -8,15 +8,26 @@ import { Observable } from 'rxjs/internal/Observable';
 
 export class QuestionService {
   private API_SERVER_ALL = "http://localhost:8080/question/allQuestion";
-  private API_SERVER_QUESTION = "http://localhost:8080/question/getQuestionRandom"; //http://localhost:8080/question/getQuestion
-  
+  private API_QUESTION_RANDOM = "http://localhost:8080/question/getQuestionByCategory/";
+  // private API_SERVER_QUESTION = "http://localhost:8080/question/getQuestionRandom";
+  private idCategory: any;
+ 
   constructor(private HttpClient: HttpClient) { }
 
-  public getAllQuestion(): Observable<any> {
-    return this.HttpClient.get(this.API_SERVER_ALL)
+  public getQuestionRandom(): Observable<any> {
+    return this.HttpClient.get(`${this.API_QUESTION_RANDOM}`+ this.idCategory);
   }
 
-  public getQuestionRandom(): Observable<any> {
-    return this.HttpClient.get(this.API_SERVER_QUESTION)
+  public getCategory(idCategory: any): Observable<any> {
+    this.idCategory = idCategory;
+    return this.idCategory;
   }
+
+  public getAllQuestion(): Observable<any> {
+    return this.HttpClient.get(this.API_SERVER_ALL);
+  }
+
+  /*public getQuestionRandom(): Observable<any> {
+    return this.HttpClient.get(this.API_SERVER_QUESTION);
+  }*/
 }

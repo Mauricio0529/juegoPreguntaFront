@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from './services/login/login.service';
 /*import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuestionService } from './services/question/question.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -61,6 +62,7 @@ https://www.youtube.com/watch?v=bFvfqUMjvsA
   //tipoFuenteControl = new FormControl()
 
   constructor(
+    public login: LoginService
     //private dialog: MatDialog,
     //public formBuilder: FormBuilder, 
     //public questionService: QuestionService,

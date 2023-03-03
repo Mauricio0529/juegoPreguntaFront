@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { QuestionService } from '../../services/question/question.service'
+import { QuestionService } from '../../../services/question/question.service'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DialogComponent } from '../../components/dialog/dialog.component';
+import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -12,12 +12,10 @@ import { FormControl } from '@angular/forms';
 })
 
 export class GameComponent implements OnInit {
-  title = 'login';
+  title = 'game';
   questionForm: FormGroup;
   questions: any;
   questionRandom: any;
-  answerRandom: any;
-  preguntas: any;
 
   tipoFuenteControl = new FormControl()
 
@@ -33,10 +31,10 @@ export class GameComponent implements OnInit {
       questionNumber: ['', Validators.required],
       question: ['', Validators.required],
     });
-    
     this.questionForm.disable();
 
-    this.viewQuestionRandom();  
+    this.showQuestionRandom();  // este es con id category
+   // this.viewQuestionRandom(); // este es el original
 
     this.questionService.getAllQuestion().subscribe(response => {
       this.questions = response;
@@ -44,25 +42,38 @@ export class GameComponent implements OnInit {
       error => { console.error(error) }
     );
   }
-   
+
+  showQuestionRandom(): void {
+    this.questionService.getQuestionRandom().subscribe(response => {
+      this.questionRandom = response;
+      console.log(this.questionRandom);
+    },
+      error => { console.error(error) }
+    )
+    // this.time();
+  }
+
   openDialog() {
-    const dialogConfig = new MatDialogConfig();
+   const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
 
     this.dialog.open(DialogComponent, dialogConfig);
   }
 
-  verFuente(fuente: boolean) {
-    if(fuente == true) {
-      this.viewQuestionRandom();
-      alert("La pregunta es correcta " + fuente);
+  validateSelectedQuestion(answerSelect: boolean) {
+    if(answerSelect == true) {
+      // this.viewQuestionRandom();
+      alert("La pregunta es correcta " + answerSelect);
+      this.showQuestionRandom();
     } else {
-      this.viewQuestionRandom();
-      alert("La pregunta es incorrecta " + fuente);
+      // this.viewQuestionRandom();
+      alert("La pregunta es incorrecta " + answerSelect);
+      this.showQuestionRandom();
     }
   }
 
+/*
   viewQuestionRandom(): void {
     this.questionService.getQuestionRandom().subscribe(response => {
       this.questionRandom = response;
@@ -70,13 +81,14 @@ export class GameComponent implements OnInit {
         idQuestion: '',
         questionNumber: this.questionRandom,
         question: 28
-      });*/
+      });
       console.log(this.questionRandom);
     },
       error => { console.error(error) }
     )
    // this.time();
   }
+*/
 
   time():void {
 /*
@@ -96,8 +108,9 @@ https://material.angular.io/components/list/examples
 */
 
     setTimeout(() => {
-      this.viewQuestionRandom();
+      // this.viewQuestionRandom();
       alert("Su tiempo ha terminado");
+      this.showQuestionRandom();
     }, 4000);
   }
 

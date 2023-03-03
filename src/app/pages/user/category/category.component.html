@@ -1,0 +1,6 @@
+<app-navbar></app-navbar>
+<mat-grid-list cols="2" rowHeight="2:1" >
+    <mat-grid-tile *ngFor="let item of categorys" (click)="getCategoryById(item.id)" [routerLink]="'/game'">
+        {{item.nameCategory}}
+    </mat-grid-tile>
+</mat-grid-list>
