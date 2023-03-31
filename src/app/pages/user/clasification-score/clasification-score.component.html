@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<div class="formularioRegistro">
+    <h2>Top General</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Puntaje</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of users">
+                <td>{{item.name}}</td>
+                <td>{{item.score}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

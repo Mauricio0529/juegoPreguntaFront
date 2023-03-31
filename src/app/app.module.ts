@@ -18,7 +18,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 
 /* COMPONENTS */
-import { DialogComponent } from './components/dialog/dialog.component';
+import { DialogComponent } from './components/dialog/succes-green/dialog.component';
+import { DialogRedComponent } from './components/dialog/alert-red/dialog-red/dialog-red.component';
 import { ButtonToggleComponent } from './components/button-toggle/button-toggle.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
@@ -30,8 +31,7 @@ import { GameComponent } from './pages/user/game/game.component';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { authInterceptorProviders } from './services/httpInterceptors/auth.interceptor';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
-
-
+import { ClasificationScoreComponent } from './pages/user/clasification-score/clasification-score.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,9 @@ import { DashboardComponent } from './pages/admin/dashboard/dashboard.component'
     CategoryComponent,
     GameComponent,
     SnackBarComponent,
-    DashboardComponent
+    DashboardComponent,
+    ClasificationScoreComponent,
+    DialogRedComponent,
   ],
   imports: [
     BrowserModule,

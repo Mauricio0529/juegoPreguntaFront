@@ -1,0 +1,21 @@
+.container {
+    display: grid;
+    place-items: center;
+}
+
+.container h1 {
+    font-size: 1.5em;
+    font-style: bold;
+    color: #c50000;
+}
+
+.container p {
+    font-size: 1.3em;
+    color: #000000;
+}
+
+button:hover {
+    background:#c50000;
+    color: #ffffff;
+}
+

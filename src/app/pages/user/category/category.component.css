@@ -1,8 +1,24 @@
-mat-grid-tile {
-    background: rgb(211, 214, 215);
-    cursor: pointer;
+
+.card-container {    
+  margin-top: 5px;
 }
 
-mat-grid-tile:hover {
-    background: rgb(0, 154, 168);
+.card { /* este es el que tiene tamaño del card*/
+  border: 1px solid #eee;
+  background-color: #fafafa;
+  transition: all 0.2s ease-in-out;
+  line-height: 24px;
+}
+
+mat-grid-tile {
+  width: 24px;
+}
+
+.card-container .card:not(.highlight-card):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+}
+
+.card-container .card:not(.highlight-card):hover .material-icons path {
+  fill: rgb(105, 103, 103);
 }

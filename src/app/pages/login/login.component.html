@@ -1,37 +1,35 @@
-<div class="bootstrap-wrapper">
+<div class="main">
     <div class="container">
-        <div class="row mt20">
-            <div class="col-md-6 offset-md-3">
-                <mat-card>
-                    <div class="container text-center">
-                        <img src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-user-login-or-authenticate-icon-on-gray-background-flat-icon-ve-png-image_5089976.jpg" alt="" width="100" height="100">
-                    </div>
-                    <h1 class="text-center">Inicio de sesión</h1>
-                    <form (ngSubmit)="formSubmit()" class="example-form">
-                        <mat-form-field class="full-width" appearance="outline">
-                            <mat-label>Nombre de usuario</mat-label>
-                            <input matInput [(ngModel)]="loginData.username" name="username" type="text" placeholder="usuario123" required>
-                            <mat-hint>El nombre de usuario debe ser valido</mat-hint>
-                        </mat-form-field>
+        <input type="checkbox" id="chk" aria-hidden="true">
+        
+        <div class="login">
+            <form (ngSubmit)="formSubmit()">
+                <label for="chk" aria-hidden="true">Iniciar sesion</label>
+                <mat-form-field class="matFormFieldLogin" appearance="outline">
+                    <mat-label class="matLabelLogin">Nombre de usuario</mat-label>
+                    
+                    <input class="inputLogin" matInput [(ngModel)]="loginData.username" 
+                    name="username" type="text" placeholder="Ej: usuario123" required>
 
-                        <mat-form-field class="full-width" appearance="outline">
-                            <mat-label>Contraseña</mat-label>
-                            <input matInput [(ngModel)]="loginData.password" name="password" type="password" placeholder="Digite su contraseña" required>
-                            <mat-hint>La contraseña debe ser valida</mat-hint>
-                        </mat-form-field>
+                    <mat-hint>El nombre de usuario debe ser valido</mat-hint>
+                </mat-form-field>
 
-                        <div class="container text-center">
-                            <!-- [routerLink]="'/game'" -->
-                            <button mat-raised-button color="primary">Iniciar Sesion</button>
-                        </div>
-                        <br>
-                        <hr>
-                        <div class="container text-center full-width">
-                            <button [routerLink]="'/signup'" mat-raised-button color="primary">Crear Cuenta</button>
-                        </div>
-                    </form>
-                </mat-card>
-            </div>
+                <mat-form-field class="matFormFieldLogin" appearance="outline">
+                    <mat-label class="matLabelLogin">Contraseña</mat-label>
+                    
+                    <input class="inputLogin" matInput [(ngModel)]="loginData.password" 
+                    name="password" type="password" placeholder="Digite su contraseña" required>
+
+                    <mat-hint>La contraseña debe ser valida</mat-hint>
+                </mat-form-field>
+            
+                <button>Continuar</button>
+            </form>
+        </div>
+
+        <div class="signup">
+            <label for="chk" aria-hidden="true">Crear cuenta</label>
+            <app-signup></app-signup>
         </div>
     </div>
 </div>

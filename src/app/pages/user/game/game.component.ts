@@ -1,9 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { QuestionService } from '../../../services/question/question.service'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { DialogComponent } from '../../../components/dialog/dialog.component';
+import { DialogComponent } from '../../../components/dialog/succes-green/dialog.component';
+import { DialogRedComponent } from '../../../components/dialog/alert-red/dialog-red/dialog-red.component';
 import { FormControl } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -11,11 +15,17 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./game.component.css']
 })
 
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   title = 'game';
   questionForm: FormGroup;
-  questions: any;
   questionRandom: any;
+  questionSuscribe: any;
+  numberQuestion: number =  0;
+  pointsGame: number = 0;
+
+  time: number = 10;
+  timePaused: boolean = false;
+  timeStop: any;
 
   tipoFuenteControl = new FormControl()
 
@@ -23,6 +33,8 @@ export class GameComponent implements OnInit {
     private dialog: MatDialog,
     public formBuilder: FormBuilder, 
     public questionService: QuestionService,
+    public snack: MatSnackBar,
+    private router: Router
   ){}
 
   ngOnInit(): void {
@@ -31,87 +43,107 @@ export class GameComponent implements OnInit {
       questionNumber: ['', Validators.required],
       question: ['', Validators.required],
     });
+
     this.questionForm.disable();
+    this.showQuestionRandom();
+  }
 
-    this.showQuestionRandom();  // este es con id category
-   // this.viewQuestionRandom(); // este es el original
-
-    this.questionService.getAllQuestion().subscribe(response => {
-      this.questions = response;
-    },
-      error => { console.error(error) }
-    );
+  ngOnDestroy() {
+    this.questionSuscribe.unsubscribe();
+    clearInterval(this.timeStop);
   }
 
   showQuestionRandom(): void {
-    this.questionService.getQuestionRandom().subscribe(response => {
+    this.questionSuscribe = this.questionService.getQuestionRandom().subscribe(response => {
       this.questionRandom = response;
+      this.numberQuestion++;
+      this.timeGame();
       console.log(this.questionRandom);
-    },
-      error => { console.error(error) }
+     
+    }, error => { 
+        this.dialogDataScoreUser();
+        console.error(error) 
+      }
     )
-    // this.time();
+  
   }
 
-  openDialog() {
-   const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
+  dialogDataScoreUser() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '465px',
+      height: '200px',
+      disableClose: true,
+      data: 'Su puntaje es: ' + this.pointsGame
+    });
 
-    this.dialog.open(DialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if(result) {
+        this.router.navigate(['category']);
+      }
+    });
+  }
+
+  dialogExpiredTimeGame() {
+    const dialogRef = this.dialog.open(DialogRedComponent, {
+      width: '450px',
+      height: '200px',
+      disableClose: true,
+      data: 'Upss !! su tiempo ha terminado'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if(result) {
+        console.log("Se reinica");
+        this.showQuestionRandom();
+      }
+    });
+    //Swal.fire('Usuario guardado', 'Usuario registrado con exito en el sistema', 'success');
   }
 
   validateSelectedQuestion(answerSelect: boolean) {
-    if(answerSelect == true) {
-      // this.viewQuestionRandom();
-      alert("La pregunta es correcta " + answerSelect);
-      this.showQuestionRandom();
-    } else {
-      // this.viewQuestionRandom();
-      alert("La pregunta es incorrecta " + answerSelect);
-      this.showQuestionRandom();
+    this.questionService.validateCorrectQuestion(answerSelect).subscribe(response => {
+      if(response) {
+        clearInterval(this.timeStop);
+        this.pointsGame++;
+        this.questionService.validatePointQuestion().subscribe();
+        this.openSweetAlert('Bien!', 'La pregunta es correcta', 'success');
+      } else {
+        clearInterval(this.timeStop);
+        this.openSweetAlert('Upss!', 'La pregunta es incorrecta', 'error');
+      }
+    }, 
+    error => {
+        console.error(error) 
     }
+    );
   }
 
-/*
-  viewQuestionRandom(): void {
-    this.questionService.getQuestionRandom().subscribe(response => {
-      this.questionRandom = response;
-      /*this.questionForm.setValue({
-        idQuestion: '',
-        questionNumber: this.questionRandom,
-        question: 28
-      });
-      console.log(this.questionRandom);
-    },
-      error => { console.error(error) }
-    )
-   // this.time();
-  }
-*/
-
-  time():void {
-/*
-https://www.youtube.com/results?search_query=como+colocar+un+cronometro+en+angular
-https://www.youtube.com/watch?v=5GGPB4iT5ug
-https://www.youtube.com/results?search_query=como+reiniciar+o+cargar+la+pagina+en+angular
-
-https://editor.p5js.org/Jeff-Aporta/sketches/wqS_eu6K0
-https://jeff-aporta.github.io/main/Juegos/juego-de-preguntas-v2/
-https://www.youtube.com/watch?v=lg90vwVxmxU
-
-https://developer.okta.com/blog/2020/01/21/angular-material-login
-como usar el mat-button-toggle vertical - este no
-
-https://material.angular.io/components/list/examples
-
-*/
-
-    setTimeout(() => {
-      // this.viewQuestionRandom();
-      alert("Su tiempo ha terminado");
-      this.showQuestionRandom();
-    }, 4000);
+  openSweetAlert(titles: string, text: string, icon: any):void {
+    Swal.fire({
+      title: titles,
+      text: text,
+      icon: icon,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Continuar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          this.showQuestionRandom();
+        }
+    })
   }
 
+  timeGame():void {
+    this.time = 10;
+    this.timeStop = setInterval(() => {
+      if(this.time > 0) {
+        this.time--;
+        console.log(this.timeStop);
+      } else {
+        clearInterval(this.timeStop);
+        this.dialogExpiredTimeGame();
+      }
+    }, 1000)
+  }
 }

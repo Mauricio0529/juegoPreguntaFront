@@ -7,6 +7,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { AdminGuardService } from './services/guards/admin/admin-guard.service';
 import { UserGuardService } from './services/guards/user/user-guard.service';
+import { ClasificationScoreComponent } from './pages/user/clasification-score/clasification-score.component';
 
 // establecer las rutas(las pantallas) de url
 const routes: Routes = [
@@ -35,6 +36,12 @@ const routes: Routes = [
   {
     path: 'game',
     component: GameComponent,
+    pathMatch:'full',
+    canActivate: [UserGuardService]
+  },
+  {
+    path: 'clasification',
+    component: ClasificationScoreComponent,
     pathMatch:'full',
     canActivate: [UserGuardService]
   },
